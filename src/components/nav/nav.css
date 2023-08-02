@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 0 32px;
+    padding: 0 16px;
 }
 
 .nav__title{
@@ -27,6 +27,7 @@
 .nav__list{
     display: flex;
     justify-content: center;
+    gap: 10px;
     padding: 0 20px;
 }
 

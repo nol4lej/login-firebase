@@ -1,0 +1,27 @@
+.main{
+    background-image: url("../../img/mainbg.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+}
+
+.overmain{
+    background-color: rgba(0, 0, 0, 0.642);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.main__content{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    padding: 16px;
+}

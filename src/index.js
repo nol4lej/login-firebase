@@ -1,7 +1,7 @@
-import { Router } from "./router/router.js"
+import { Router } from "../src/router/router.js"
 
 window.addEventListener("DOMContentLoaded", () => {
-    import("./components/nav/nav.js")
     Router();
+    import("./components/nav/nav.js")
 
 })

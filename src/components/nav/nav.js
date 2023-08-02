@@ -1,4 +1,5 @@
 import { handleUrl } from "../../router/router.js";
+import firebaseLogo from '../../img/firebase_icon.png';
 
 export class NavBar extends HTMLElement{
 
@@ -13,13 +14,13 @@ export class NavBar extends HTMLElement{
                 <h1 class="nav__title">
                     Login with 
                     <a class="firebase__anchor" href="https://firebase.google.com/">
-                        <img src="/src/img/firebase_icon.png">
+                        <img src=${firebaseLogo}>
                         Firebase
                     </a>
                 </h1>
                 <ul class="nav__list">
                     <li><a href="/" data-link>Inicio</a></li>
-                    <li><a href="/test" data-link>test</a></li>
+                    <li><a href="/panel" data-link>Panel</a></li>
                 </ul>
             </div>
         `

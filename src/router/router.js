@@ -1,4 +1,4 @@
-import { Main } from "../views/Main.js";
+import { Main } from "../views/Main/Main.js";
 import { Panel } from "../views/Panel.js";
 
 export const Router = () => {
