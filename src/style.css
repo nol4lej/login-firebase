@@ -1,0 +1,21 @@
+@import url("./components/nav/nav.css");
+
+:root{
+    --color-gray: #737373;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+    color: currentColor;
+}
+

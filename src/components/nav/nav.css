@@ -1,0 +1,32 @@
+.navbar{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.nav__title{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 16px;
+}
+
+.firebase__anchor{
+    display: flex;
+    align-items: center;
+    color: var(--color-gray);
+}
+
+.firebase__anchor img{
+    width: 30px;
+}
+
+.nav__list{
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+}
+
