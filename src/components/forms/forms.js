@@ -1,5 +1,6 @@
 import { userObservable } from "../../observable/users-observable.js"
 import { handleUrl } from "../../router/router.js"
+// import { LoaderComponent } from "../loader/loader.js"
 
 export class LoginForm extends HTMLElement{
 
@@ -34,15 +35,14 @@ export class LoginForm extends HTMLElement{
 
     handlePath(){
         const path = this.getAttribute("path")
-        const form_root = this.querySelector("#form-root")
-
         switch (path) {
             case "/":
-                form_root.innerHTML = this.login()
+                this.login()
                 this.handleLogin()
+                this.showPassword()
                 break;
             case "/register":
-                form_root.innerHTML = this.register()
+                this.register()
                 this.handleRegister()
                 break;
             default:
@@ -54,7 +54,8 @@ export class LoginForm extends HTMLElement{
     }
 
     login(){
-        const container = `
+        const root = this.querySelector("#form-root")
+        root.innerHTML = `
             <h2>Inicio de sesión para usuarios existentes</h2>
             <form class="form" id="login-form">
                 <div class="input__container">
@@ -69,7 +70,7 @@ export class LoginForm extends HTMLElement{
                         <label for="show-password-cbox">Mostrar contraseña</label>
                     </div>
                 </div>
-                <button type="submit" class="form__button">Iniciar sesión</button>
+                <button type="submit" class="form__button" id="login-button">Iniciar sesión</button>
             </form>
             <span id="login-info" class="login__info"></span>
             <hr>
@@ -77,37 +78,43 @@ export class LoginForm extends HTMLElement{
                 <a href="/">¿Olvidó su contraseña?</a>
             </div>
         `
-        return container
     }
 
     handleLogin(){
         const form = this.querySelector("#login-form")
         const info = this.querySelector("#login-info")
-        const passwordInput = this.querySelector("#password-input")
-        const cbox = this.querySelector("#show-password-cbox")
-
-        cbox.addEventListener("change", () => {
-            if (cbox.checked) {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
-        })
+        const loginButton = this.querySelector("#login-button")
 
         form.addEventListener("submit", async (event) => {
+            loginButton.innerHTML = `<loader-component width="5" height="5"></loader-component>`
             event.preventDefault()
             const login = this.querySelector("#login-input").value
             const password = this.querySelector("#password-input").value
             try {
                 await userObservable.loginUser(login, password)
             } catch (error) {
-                info.innerHTML = error
+                if(error.includes("email")){
+                    const input = this.querySelector("#login-input")
+                    this.handleInputInvalid(input)
+                }
+
+                if(error.includes("contraseña")){
+                    const input = this.querySelector("#password-input")
+                    this.handleInputInvalid(input)
+                }
+
+                loginButton.innerHTML = "Iniciar sesión"
+                info.classList.add("error")
+                info.innerHTML = `<i class="material-icons">error</i>${error}`
+
             }
         })
     }
 
+
     register(){
-        const container = `
+        const root = this.querySelector("#form-root")
+        root.innerHTML = `
             <h2>Registro de nuevo usuario</h2>
             <form class="form register" id="register-form">
                 <div class="input__container">
@@ -132,7 +139,6 @@ export class LoginForm extends HTMLElement{
             </form>
             <span id="register-info" class="register__info"></span>
         `
-        return container
     }
 
     handleRegister(){
@@ -169,6 +175,25 @@ export class LoginForm extends HTMLElement{
                 anchor.classList.remove("active");
             }
         });
+    }
+
+    handleInputInvalid(input){
+        input.classList.add("invalid")
+        input.addEventListener('blur', () => {  
+            input.classList.remove('invalid');
+        });
+    }
+
+    showPassword(){
+        const passwordInput = this.querySelector("#password-input")
+        const cbox = this.querySelector("#show-password-cbox")
+        cbox.addEventListener("change", () => {
+            if (cbox.checked) {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        })
     }
 
 }

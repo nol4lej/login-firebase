@@ -35,9 +35,14 @@ class UsersObservable extends Subject{
             await signInWithEmailAndPassword(auth, login, password)
             .then((userCredential) => console.log(userCredential))
         } catch (error) {
+            console.log(error)
             switch (error.code) {
                 case "auth/invalid-email":
-                    throw "Invalid email."
+                    throw "El email ingresado no está asociado a una cuenta."
+                case "auth/wrong-password":
+                    throw "La contraseña ingresada no es correcta."
+                case "auth/too-many-requests":
+                    throw "El acceso a esta cuenta se ha inhabilitado temporalmente debido a muchos intentos fallidos de inicio de sesión. Puede restaurarlo inmediatamente restableciendo su contraseña o puede volver a intentarlo más tarde."
                 default:
                     break;
             }

@@ -1,0 +1,16 @@
+loader-component{
+    display: flex;
+    justify-content: center;
+}
+
+.loader {
+    border: 8px solid var(--bg-blue-light);
+    border-top: 8px solid var(--color-white);
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

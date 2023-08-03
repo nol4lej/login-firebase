@@ -47,6 +47,8 @@ user-forms{
 
 /* ----------------------- END BUTTONS ----------------------- */
 
+
+
 /* ----------------------- FORM ----------------------- */
 
 .form__root{
@@ -117,6 +119,9 @@ user-forms{
 
 /* ----------------------- END FORM ----------------------- */
 
+
+
+/* ----------------------- EXTRA LINKS ----------------------- */
 .extra__info{
     padding: 16px 0;
 }
@@ -125,6 +130,33 @@ user-forms{
     color: var(--color-blue);
     text-decoration: underline;
 }
+/* ----------------------- END EXTRA LINKS ----------------------- */
+
+
+
+/* ----------------------- INFO ----------------------- */
+.login__info{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    /* background-color: var(--bg-blue-light); */
+    /* border-radius: 10px; */
+}
+.login__info.error{
+    color: var(--color-red);
+}
+
+.input__container input.invalid{
+    border: 1px solid var(--color-red);
+}
+
+.input__container input:focus{
+    border: 1px solid var(--color-red);
+}
+/* ----------------------- END INFO ----------------------- */
+
+
 
 
 @media screen and (min-width: 640px) {

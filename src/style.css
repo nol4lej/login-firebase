@@ -2,11 +2,13 @@
 @import url("./views/Main/Main.css");
 @import url("./components/forms/forms.css");
 @import url("./components/footer/footer.css");
+@import url("./components/loader/loader.css");
 
 :root{
     --color-gray: #737373;
     --color-white: #fff;
     --color-blue: #0071bb;
+    --color-red: red;
     --bg-blue: #112e51;
     --bg-blue-light: #ebf3fa;
     --bg-input: #f2f9ff;
