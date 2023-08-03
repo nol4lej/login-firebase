@@ -1,13 +1,10 @@
 import "../../components/forms/forms.js"
 import "../../components/footer/footer.js"
 
-export const Main = () => {
+export const Main = (path) => {
     return `
         <section class="main">
-            <div class="overmain"></div>
-            <div class="main__content">
-                <user-forms></user-forms>
-            </div>
+            <user-forms path="${path}"></user-forms>
         </section>
         <footer-component></footer-component>
     `

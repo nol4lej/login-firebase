@@ -7,7 +7,10 @@ export const Router = () => {
 
     switch (path) {
         case "/":
-            root.innerHTML = Main()
+            root.innerHTML = Main(path)
+            break;
+        case "/register":
+            root.innerHTML = Main(path)
             break;
         case "/panel":
             root.innerHTML = Panel()

@@ -1,18 +1,20 @@
 import { userObservable } from "../../observable/users-observable.js"
+import { handleUrl } from "../../router/router.js"
 
 export class LoginForm extends HTMLElement{
 
     connectedCallback(){
         this.render()
-        this.handleFromRouter()
+        this.handlePath()
+        this.handleButtons()
     }
 
     render(){
         this.innerHTML = `
             <div class="form__content">
                 <div class="form__buttons">
-                    <a href="#" id="login-button" class="login__button">Login</a>
-                    <a href="#/register" id="register-button" class="register__button">Register</a>
+                    <a href="/" class="login__button" data-link>Login</a>
+                    <a href="/register" class="register__button" data-link>Register</a>
                 </div>
                 <div id="form-root" id="form__root">
                 </div>
@@ -20,61 +22,52 @@ export class LoginForm extends HTMLElement{
         `
     }
 
-    handleFromRouter(){
-        const form_root = this.querySelector("#form-root")
-        const hash = window.location.hash
+    handleButtons(){
+        const anchors = this.querySelectorAll("a[data-link]")
+        anchors.forEach(a => {
+            a.addEventListener("click", (event) => {
+                event.preventDefault()
+                const attr = a.getAttribute("href")
+                const url = event.target.href;
+                handleUrl(url); // envio la url al manejador de la URL que se encuentra en el Router
+            })
+        })
+    }
 
-        switch (hash) {
-            case "":
-            case "#":
-                const btnLogin = this.querySelector("#login-button")
-                btnLogin.classList.toggle("active")
-                form_root.innerHTML = `
-                    <form class="form" id="login-form">
-                        <div class="input__container">
-                            <label>Ingrese su nombre de usuario o email:</label>
-                            <input type="text" id="login-input" required>
-                        </div>
-                        <div class="input__container">
-                            <label>Ingrese su password:</label>
-                            <input type="password" id="password-input" required>
-                        </div>
-                        <button type="submit" class="form__button">Iniciar sesión</button>
-                    </form>
-                    <span id="login-info" class="login__info"></span>
-                `
+    handlePath(){
+        const path = this.getAttribute("path")
+        const form_root = this.querySelector("#form-root")
+
+        switch (path) {
+            case "/":
+                form_root.innerHTML = this.login()
                 this.handleLogin()
                 break;
-
-            case "#/register":
-                const btnRegister = this.querySelector("#register-button")
-                btnRegister.classList.toggle("active")
-                form_root.innerHTML = `
-                    <form class="form" id="register-form">
-                        <div class="input__container">
-                            <label>Ingresa un nombre de usuario:</label>
-                            <input id="username-input">
-                        </div>
-                        <div class="input__container">
-                            <label>Ingrese su email:</label>
-                            <input id="email-input">
-                        </div>
-                        <div class="input__container">
-                            <label>Ingrese su password:</label>
-                            <input type="password" id="password-input">
-                            <label>Reingresa tu contraseña:</label>
-                            <input type="password" id="repeat-password-input">
-                        </div>
-                        <button type="submit" class="form__button">Registrar usuario</button>
-                    </form>
-                    <span id="register-info" class="register__info"></span>
-                `
+            case "/register":
+                form_root.innerHTML = this.register()
                 this.handleRegister()
                 break;
             default:
                 break;
-
         }
+    }
+
+    login(){
+        const container = `
+            <form class="form" id="login-form">
+                <div class="input__container">
+                    <label>Ingrese su nombre de usuario o email:</label>
+                    <input type="text" id="login-input" required>
+                </div>
+                <div class="input__container">
+                    <label>Ingrese su password:</label>
+                    <input type="password" id="password-input" required>
+                </div>
+                <button type="submit" class="form__button">Iniciar sesión</button>
+            </form>
+            <span id="login-info" class="login__info"></span>
+        `
+        return container
     }
 
     handleLogin(){
@@ -92,6 +85,30 @@ export class LoginForm extends HTMLElement{
             }
             
         })
+    }
+
+    register(){
+        const container = `
+            <form class="form" id="register-form">
+                <div class="input__container">
+                    <label>Ingresa un nombre de usuario:</label>
+                    <input id="username-input">
+                </div>
+                <div class="input__container">
+                    <label>Ingrese su email:</label>
+                    <input id="email-input">
+                </div>
+                <div class="input__container">
+                    <label>Ingrese su password:</label>
+                    <input type="password" id="password-input">
+                    <label>Reingresa tu contraseña:</label>
+                    <input type="password" id="repeat-password-input">
+                </div>
+                <button type="submit" class="form__button">Registrar usuario</button>
+            </form>
+            <span id="register-info" class="register__info"></span>
+        `
+        return container
     }
 
     handleRegister(){

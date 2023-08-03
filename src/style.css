@@ -4,6 +4,9 @@
 
 :root{
     --color-gray: #737373;
+    --color-white: #fff;
+    --bg-blue: #112e51;
+    --bg-blue-light: #ebf3fa;;
 }
 
 body{

@@ -1,8 +1,10 @@
 .navbar{
+    background-color: var(--bg-blue);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 0 16px;
+    color: var(--color-white);
 }
 
 .nav__title{
@@ -17,7 +19,6 @@
 .firebase__anchor{
     display: flex;
     align-items: center;
-    color: var(--color-gray);
 }
 
 .firebase__anchor img{
