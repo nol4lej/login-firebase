@@ -1,4 +1,6 @@
 .main{
     background-color: var(--bg-blue-light);
+    padding: 56px 0;
     display: flex;
+    justify-content: center;
 }

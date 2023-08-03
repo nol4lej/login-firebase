@@ -1,12 +1,17 @@
 @import url("./components/nav/nav.css");
 @import url("./views/Main/Main.css");
 @import url("./components/forms/forms.css");
+@import url("./components/footer/footer.css");
 
 :root{
     --color-gray: #737373;
     --color-white: #fff;
+    --color-blue: #0071bb;
     --bg-blue: #112e51;
-    --bg-blue-light: #ebf3fa;;
+    --bg-blue-light: #ebf3fa;
+    --bg-input: #f2f9ff;
+    --border-input: #cedced;
+    
 }
 
 body{

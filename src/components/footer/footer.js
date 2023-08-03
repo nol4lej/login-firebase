@@ -6,9 +6,7 @@ export class FooterComponent extends HTMLElement{
 
     render(){
         this.innerHTML = `
-            <div>
-                <h2>Footer</h2>
-            </div>
+            <p>Creado por Nolasco Medina</p>
         `
     }
 

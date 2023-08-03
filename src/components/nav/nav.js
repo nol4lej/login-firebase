@@ -12,7 +12,7 @@ export class NavBar extends HTMLElement{
         this.innerHTML = `
             <div class="navbar">
                 <h1 class="nav__title">
-                    Login with 
+                    Manejo de usuarios con
                     <a class="firebase__anchor" href="https://firebase.google.com/">
                         <img src=${firebaseLogo}>
                         Firebase

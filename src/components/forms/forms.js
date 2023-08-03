@@ -13,11 +13,10 @@ export class LoginForm extends HTMLElement{
         this.innerHTML = `
             <div class="form__content">
                 <div class="form__buttons">
-                    <a href="/" class="login__button" data-link>Login</a>
-                    <a href="/register" class="register__button" data-link>Register</a>
+                    <a href="/" class="login__button" data-link>Iniciar sesión</a>
+                    <a href="/register" class="register__button" data-link>Crear cuenta</a>
                 </div>
-                <div id="form-root" id="form__root">
-                </div>
+                <div id="form-root" class="form__root"></div>
             </div>
         `
     }
@@ -27,7 +26,6 @@ export class LoginForm extends HTMLElement{
         anchors.forEach(a => {
             a.addEventListener("click", (event) => {
                 event.preventDefault()
-                const attr = a.getAttribute("href")
                 const url = event.target.href;
                 handleUrl(url); // envio la url al manejador de la URL que se encuentra en el Router
             })
@@ -50,22 +48,34 @@ export class LoginForm extends HTMLElement{
             default:
                 break;
         }
+
+        this.handleActiveClass(path)
+
     }
 
     login(){
         const container = `
+            <h2>Inicio de sesión para usuarios existentes</h2>
             <form class="form" id="login-form">
                 <div class="input__container">
-                    <label>Ingrese su nombre de usuario o email:</label>
+                    <label>Nombre de usuario o email:</label>
                     <input type="text" id="login-input" required>
                 </div>
                 <div class="input__container">
-                    <label>Ingrese su password:</label>
+                    <label>Contraseña:</label>
                     <input type="password" id="password-input" required>
+                    <div class="password__checkbox">
+                        <input type="checkbox" id="show-password-cbox" value="password_checkbox"/>
+                        <label for="show-password-cbox">Mostrar contraseña</label>
+                    </div>
                 </div>
                 <button type="submit" class="form__button">Iniciar sesión</button>
             </form>
             <span id="login-info" class="login__info"></span>
+            <hr>
+            <div class="extra__info">
+                <a href="/">¿Olvidó su contraseña?</a>
+            </div>
         `
         return container
     }
@@ -73,6 +83,16 @@ export class LoginForm extends HTMLElement{
     handleLogin(){
         const form = this.querySelector("#login-form")
         const info = this.querySelector("#login-info")
+        const passwordInput = this.querySelector("#password-input")
+        const cbox = this.querySelector("#show-password-cbox")
+
+        cbox.addEventListener("change", () => {
+            if (cbox.checked) {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        })
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault()
@@ -83,28 +103,32 @@ export class LoginForm extends HTMLElement{
             } catch (error) {
                 info.innerHTML = error
             }
-            
         })
     }
 
     register(){
         const container = `
-            <form class="form" id="register-form">
+            <h2>Registro de nuevo usuario</h2>
+            <form class="form register" id="register-form">
                 <div class="input__container">
-                    <label>Ingresa un nombre de usuario:</label>
+                    <label>Ingrese un nuevo nombre de usuario:</label>
                     <input id="username-input">
                 </div>
                 <div class="input__container">
                     <label>Ingrese su email:</label>
                     <input id="email-input">
                 </div>
-                <div class="input__container">
-                    <label>Ingrese su password:</label>
-                    <input type="password" id="password-input">
-                    <label>Reingresa tu contraseña:</label>
-                    <input type="password" id="repeat-password-input">
+                <div class="input__container passwords">
+                    <div class="input__container__passwords">
+                        <label>Ingrese su contraseña:</label>
+                        <input type="password" id="password-input">
+                    </div>
+                    <div class="input__container__passwords">
+                        <label>Reingrese su contraseña:</label>
+                        <input type="password" id="repeat-password-input">
+                    </div>
                 </div>
-                <button type="submit" class="form__button">Registrar usuario</button>
+                <button type="submit" class="form__button register">Registrar usuario</button>
             </form>
             <span id="register-info" class="register__info"></span>
         `
@@ -135,6 +159,17 @@ export class LoginForm extends HTMLElement{
         })
     }
 
+    handleActiveClass(path){
+        // Agregar la clase "active" al anchor correspondiente según la ruta actual
+        const anchors = this.querySelectorAll("a[data-link]");
+        anchors.forEach((anchor) => {
+            if (anchor.getAttribute("href") === path) {
+                anchor.classList.add("active");
+            } else {
+                anchor.classList.remove("active");
+            }
+        });
+    }
 
 }
 
