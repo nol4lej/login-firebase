@@ -6,7 +6,12 @@ export class Subject{
 
     notify(event){
         this.observers.forEach(observer => {
-            observer.notify(event)
+            if(typeof observer === "function"){
+                observer(event)
+            }
+            if(typeof observer === "object"){
+                observer.notify(event)
+            }
         })
     }
 

@@ -1,0 +1,44 @@
+panel-user{
+    display: flex;
+    background-color: var(--color-white);
+    width: -webkit-fill-available; /* permite que se mantenga la anchura máxima (620px) */
+    max-width: 620px;
+    border-radius: 8px;
+}
+
+.panel__container{
+    width: 100%;
+}
+
+.panel__container h2{
+    text-align: center;
+}
+
+.user__info__container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user__info{
+    padding: 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user__info p{
+    padding: 8px 16px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: 0.25rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    overflow-x: scroll;
+}
+
+@media screen and (min-width: 640px){
+    .user__info__container{
+        padding: 8px 16px;
+    }
+}

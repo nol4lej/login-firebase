@@ -62,7 +62,7 @@ user-forms{
 }
 
 .form.register{
-    gap: 10px;
+    gap: 35px;
 }
 
 .input__container{
@@ -135,15 +135,13 @@ user-forms{
 
 
 /* ----------------------- INFO ----------------------- */
-.login__info{
+.login__info, .register__info{
     display: flex;
     align-items: center;
     padding: 10px;
     gap: 10px;
-    /* background-color: var(--bg-blue-light); */
-    /* border-radius: 10px; */
 }
-.login__info.error{
+.login__info.error, .register__info.error{
     color: var(--color-red);
 }
 /* ----------------------- END INFO ----------------------- */
@@ -164,6 +162,6 @@ user-forms{
     }
 
     .form__root{
-        padding: 16px 64px 54px 64px;
+        padding: 16px 64px 44px 64px;
     }
 }

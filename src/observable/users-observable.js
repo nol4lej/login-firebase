@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.js";
 import { Subject } from "../helpers/subject.js";
@@ -8,40 +8,34 @@ class UsersObservable extends Subject{
 
     constructor(){
         super()
+        this.authState()
         this.currentUser = []
     }
 
     notify(user){
-        this.currentUser = user
-        super.notify(this.user)
-    }
+        this.currentUser = []
+        this.currentUser.push(user)
+        super.notify(this.currentUser)
+    }   
 
     async authState(){
         onAuthStateChanged(auth, async (user) => {
             if(user){
-                handleUrl(`${window.location.href}panel`)
-                console.log(user)
-            } else {
-                console.log(user)
+                this.notify(user)
+                handleUrl(`${window.location.protocol}//${window.location.host}/panel`) // redirijo a la vista panel
             }
-            
-            this.notify(user)
         })
     }
 
     async Logout(){
+        this.notify()
         await signOut(auth)
+        handleUrl(`${window.location.protocol}//${window.location.host}/`)
     }
 
     async loginUser(login, password){
         try {
             await signInWithEmailAndPassword(auth, login, password)
-            // this.persistence(login, password)
-            .then((userCredential) => {
-                console.log(userCredential)
-                handleUrl(`${window.location.href}panel`) // redirijo a la vista panel
-            })
-            
         } catch (error) {
             console.log(error)
             switch (error.code) {
@@ -65,6 +59,7 @@ class UsersObservable extends Subject{
                 await this.AddingUserToFirestore(userCredential)
             })
         } catch (error) {
+            console.log(error)
             console.log(error.code)
             switch (error.code) {
                 case "auth/invalid-email":
@@ -105,22 +100,18 @@ class UsersObservable extends Subject{
         }
     }
 
-    async GetUsersRole(currentUser){
+    async GetUsersDataFromFirestore(currentUserId){
         const querySnapshot = await getDocs(collection(db, "users"));
-        let userRole;
+        let userData;
         querySnapshot.forEach((doc) => {
             const { displayName, email, role, uid } = doc._document.data.value.mapValue.fields
-            if (uid.stringValue === currentUser.uid){
-                userRole = role.stringValue;
+            if (uid.stringValue === currentUserId){
+                userData = doc._document.data.value.mapValue.fields;
             }
         });
-        return userRole;
+        return userData;
     }
 
 }
 
-
-
 export const userObservable = new UsersObservable()
-
-userObservable.authState()

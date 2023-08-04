@@ -1,6 +1,5 @@
 import { userObservable } from "../../observable/users-observable.js"
 import { handleUrl } from "../../router/router.js"
-// import { LoaderComponent } from "../loader/loader.js"
 
 export class LoginForm extends HTMLElement{
 
@@ -110,7 +109,6 @@ export class LoginForm extends HTMLElement{
                 loginButton.innerHTML = "Iniciar sesión" // como hubo error, quito el loader y agrego nuevamente el nombre del boton
                 info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i>${error}`
-
             }
         })
     }
@@ -125,10 +123,18 @@ export class LoginForm extends HTMLElement{
                     <label>Ingrese un nuevo nombre de usuario:</label>
                     <input id="username-input">
                 </div>
-                <div class="input__container">
-                    <label>Ingrese su email:</label>
-                    <input id="email-input">
+
+                <div class="input__container passwords">
+                    <div class="input__container__passwords">
+                        <label>Ingrese su email:</label>
+                        <input type="email" id="email-input">
+                    </div>
+                    <div class="input__container__passwords">
+                        <label>Reingrese su email:</label>
+                        <input type="email" id="repeat-email-input">
+                    </div>
                 </div>
+
                 <div class="input__container passwords">
                     <div class="input__container__passwords">
                         <label>Ingrese su contraseña:</label>
@@ -139,7 +145,7 @@ export class LoginForm extends HTMLElement{
                         <input type="password" id="repeat-password-input">
                     </div>
                 </div>
-                <button type="submit" class="form__button register">Registrar usuario</button>
+                <button type="submit" class="form__button register" id="register-button">Registrar usuario</button>
             </form>
             <span id="register-info" class="register__info"></span>
         `
@@ -150,20 +156,44 @@ export class LoginForm extends HTMLElement{
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault()
+            const info = this.querySelector("#register-info")
+            const registerButton = this.querySelector("#register-button")
             const username = this.querySelector("#username-input").value
-            const email = this.querySelector("#email-input").value
 
-            const password = this.querySelector("#password-input").value
-            const repeatPassword = this.querySelector("#repeat-password-input").value
-            if(password !== repeatPassword){
-                const info = this.querySelector("#register-info")
-                return info.innerHTML = "La contraseña no coincide."
+            const email = this.querySelector("#email-input")
+            const repeatEmail = this.querySelector("#repeat-email-input")
+
+            const password = this.querySelector("#password-input")
+            const repeatPassword = this.querySelector("#repeat-password-input")
+
+            if(password.value !== repeatPassword.value){
+                this.handleInputInvalid(password)
+                info.classList.add("error")
+                info.innerHTML = `<i class="material-icons">error</i> La contraseña ingresada no coincide.`
+                return
+            }
+
+            if(email.value !== repeatEmail.value){
+                this.handleInputInvalid(email)
+                info.classList.add("error")
+                info.innerHTML = `<i class="material-icons">error</i> El email ingresado no coincide.`
+                return
             }
 
             try {
-                userObservable.registerUser(email, password, username)
+                await userObservable.registerUser(email.value, password.value, username)
             } catch (error) {
-                console.log(error)
+                if(error.includes("email")){
+                    this.handleInputInvalid(password)
+                }
+
+                if(error.includes("contraseña")){
+                    this.handleInputInvalid(email)
+                }
+
+                registerButton.innerHTML = "Registrar usuario" // como hubo error, quito el loader y agrego nuevamente el nombre del boton
+                info.classList.add("error")
+                info.innerHTML = `<i class="material-icons">error</i>${error}`
             }
 
         })
@@ -200,6 +230,10 @@ export class LoginForm extends HTMLElement{
             }
         })
     }
+
+
+
+
 
 }
 

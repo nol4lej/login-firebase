@@ -1,9 +1,10 @@
 import { Main } from "../views/Main/Main.js";
-import { Panel } from "../views/Panel.js";
+import { Panel } from "../views/Panel/Panel.js";
 
 export const Router = () => {
     const path = window.location.pathname
     const root = document.getElementById("root")
+    root.innerHTML = `<loader-component width="50" height="50"></loader-component>`
 
     switch (path) {
         case "/":
@@ -22,7 +23,6 @@ export const Router = () => {
 
 // Esta funcion se encarga de actualizar la URL. Recibe la URL desde el boton presionado en el navbar (components/nav/nav.js)
 export const handleUrl = (url) => {
-    console.log(url)
     // Primer param: 'state' - es un objeto que representa el estado asociado con la nueva entrada en el historial
     // Segundo param: 'title' - es el título que se muestra en la pestaña del navegador para la nueva página.
     // Tercer param: 'url' - especificar la nueva URL que deseas que aparezca en la barra de direcciones del navegador.
