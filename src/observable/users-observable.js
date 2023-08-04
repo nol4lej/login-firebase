@@ -1,7 +1,8 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, browserLocalPersistence, setPersistence } from "firebase/auth";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.js";
 import { Subject } from "../helpers/subject.js";
+import { handleUrl } from "../router/router.js";
 
 class UsersObservable extends Subject{
 
@@ -16,14 +17,15 @@ class UsersObservable extends Subject{
     }
 
     async authState(){
-        try {
-            onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
+            if(user){
                 console.log(user)
-                this.notify(user)
-            })
-        } catch (error) {
+            } else {
+                console.log(user)
+            }
             
-        }
+            this.notify(user)
+        })
     }
 
     async Logout(){
@@ -33,7 +35,12 @@ class UsersObservable extends Subject{
     async loginUser(login, password){
         try {
             await signInWithEmailAndPassword(auth, login, password)
-            .then((userCredential) => console.log(userCredential))
+            // this.persistence(login, password)
+            .then((userCredential) => {
+                console.log(userCredential)
+                handleUrl(`${window.location.href}/panel`) // redirijo a la vista panel
+            })
+            
         } catch (error) {
             console.log(error)
             switch (error.code) {

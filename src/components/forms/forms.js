@@ -22,6 +22,7 @@ export class LoginForm extends HTMLElement{
         `
     }
 
+    // capturo los botones para manejar el login y register, luego notifico al router que estoy cambiando de vista
     handleButtons(){
         const anchors = this.querySelectorAll("a[data-link]")
         anchors.forEach(a => {
@@ -82,17 +83,20 @@ export class LoginForm extends HTMLElement{
 
     handleLogin(){
         const form = this.querySelector("#login-form")
-        const info = this.querySelector("#login-info")
         const loginButton = this.querySelector("#login-button")
 
         form.addEventListener("submit", async (event) => {
-            loginButton.innerHTML = `<loader-component width="5" height="5"></loader-component>`
             event.preventDefault()
+            // agrego el loader en el boton mientras espero la respuesta del login
+            loginButton.innerHTML = `<loader-component width="5" height="5"></loader-component>`
+
             const login = this.querySelector("#login-input").value
             const password = this.querySelector("#password-input").value
+
             try {
                 await userObservable.loginUser(login, password)
             } catch (error) {
+                const info = this.querySelector("#login-info")
                 if(error.includes("email")){
                     const input = this.querySelector("#login-input")
                     this.handleInputInvalid(input)
@@ -103,7 +107,7 @@ export class LoginForm extends HTMLElement{
                     this.handleInputInvalid(input)
                 }
 
-                loginButton.innerHTML = "Iniciar sesión"
+                loginButton.innerHTML = "Iniciar sesión" // como hubo error, quito el loader y agrego nuevamente el nombre del boton
                 info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i>${error}`
 
@@ -165,8 +169,8 @@ export class LoginForm extends HTMLElement{
         })
     }
 
+    // Agrega la clase "active" al anchor correspondiente según la ruta actual
     handleActiveClass(path){
-        // Agregar la clase "active" al anchor correspondiente según la ruta actual
         const anchors = this.querySelectorAll("a[data-link]");
         anchors.forEach((anchor) => {
             if (anchor.getAttribute("href") === path) {
@@ -177,6 +181,7 @@ export class LoginForm extends HTMLElement{
         });
     }
 
+    // Agrega la clase "invalid" al input en caso de error y se maneja la clase con el evento blur
     handleInputInvalid(input){
         input.classList.add("invalid")
         input.addEventListener('blur', () => {  
