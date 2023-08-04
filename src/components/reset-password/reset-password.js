@@ -24,7 +24,7 @@ class ResetPasswordComponent extends HTMLElement{
                     <form class="reset__form" id="reset">
                         <input type="email" id="reset__input">
                         <span id="error-info" class="error__info"></span>
-                        <button class="reset__button" type"submit">Reestablecer contraseña</button>
+                        <button class="reset__button" type"submit" id="reset-button">Reestablecer contraseña</button>
                     </form>
                 </div>
             </div>
@@ -36,14 +36,19 @@ class ResetPasswordComponent extends HTMLElement{
         const form = this.querySelector("#reset")
         const input = this.querySelector("#reset__input")
         const errorSpan = this.querySelector("#error-info")
+        const resetButton = this.querySelector("#reset-button")
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault()
 
+            resetButton.innerHTML = `<loader-component width="5" height="5"></loader-component>`
+
             try {
                 await userObservable.resetPassword(input.value)
+                
                 this.successfulReset()
             } catch (error) {
+                resetButton.innerHTML = "Reestablecer contraseña"
                 this.handleInputInvalid(input)
                 errorSpan.innerHTML = `<i class="material-icons">info</i> ${error}`
 
