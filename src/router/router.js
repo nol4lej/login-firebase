@@ -5,8 +5,12 @@ import { Panel } from "../views/Panel/Panel.js";
 export const Router = () => {
     const path = window.location.pathname
     const root = document.getElementById("root")
-    root.innerHTML = `<loader-component width="50" height="50"></loader-component>`
+    
 
+    setTimeout(() => {
+        root.innerHTML = `<loader-component width="50" height="50"></loader-component>`
+    }, 2000);
+    
     if(userObservable.currentUser[0] !== "undefined"){
         root.innerHTML = Panel()
     }
