@@ -19,6 +19,7 @@ class UsersObservable extends Subject{
     async authState(){
         onAuthStateChanged(auth, async (user) => {
             if(user){
+                handleUrl(`${window.location.href}panel`)
                 console.log(user)
             } else {
                 console.log(user)
@@ -38,7 +39,7 @@ class UsersObservable extends Subject{
             // this.persistence(login, password)
             .then((userCredential) => {
                 console.log(userCredential)
-                handleUrl(`${window.location.href}/panel`) // redirijo a la vista panel
+                handleUrl(`${window.location.href}panel`) // redirijo a la vista panel
             })
             
         } catch (error) {
