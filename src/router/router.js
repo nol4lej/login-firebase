@@ -1,3 +1,4 @@
+import { userObservable } from "../observable/users-observable.js";
 import { Main } from "../views/Main/Main.js";
 import { Panel } from "../views/Panel/Panel.js";
 
@@ -5,6 +6,10 @@ export const Router = () => {
     const path = window.location.pathname
     const root = document.getElementById("root")
     root.innerHTML = `<loader-component width="50" height="50"></loader-component>`
+
+    if(userObservable.currentUser[0] !== "undefined"){
+        root.innerHTML = Panel()
+    }
 
     switch (path) {
         case "/":
