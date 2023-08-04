@@ -9,9 +9,6 @@ export class FooterComponent extends HTMLElement{
             <p>Creado por Nolasco Medina</p>
         `
     }
-
-
-
 }
 
 customElements.define("footer-component", FooterComponent)

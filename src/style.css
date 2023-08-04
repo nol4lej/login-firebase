@@ -4,6 +4,7 @@
 @import url("./components/footer/footer.css");
 @import url("./components/loader/loader.css");
 @import url("./components/panel/panel.css");
+@import url("./components/reset-password/reset-password.css");
 
 :root{
     --color-gray: #737373;
@@ -19,9 +20,21 @@
 
 body{
     font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-blue-light);
     padding: 0;
     margin: 0;
 }
+
+main{
+    padding: 56px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ----------- RESET ----------- */
 
 ul{
     list-style: none;
@@ -45,3 +58,5 @@ button{
 h4, p{
     margin: 0;
 }
+
+/* ----------- END RESET ----------- */

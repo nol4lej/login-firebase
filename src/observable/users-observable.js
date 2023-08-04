@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut, sendPasswordResetEmail } from "firebase/auth";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.js";
 import { Subject } from "../helpers/subject.js";
@@ -116,6 +116,21 @@ class UsersObservable extends Subject{
             console.log(error)
         }
 
+    }
+
+    async resetPassword(email){
+        try {
+            await sendPasswordResetEmail(auth, email)
+            
+        } catch (error) {
+            switch (error.code) {
+                case "auth/user-not-found":
+                    throw "Correo electrónico no encontrado."
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }

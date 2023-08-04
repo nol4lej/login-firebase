@@ -3,9 +3,7 @@ import "../../components/footer/footer.js"
 
 export const Main = (path) => {
     return `
-        <section class="main">
-            <user-forms path="${path}"></user-forms>
-        </section>
+        <user-forms path="${path}"></user-forms>
         <footer-component></footer-component>
     `
 }

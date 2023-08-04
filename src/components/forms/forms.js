@@ -75,9 +75,19 @@ export class LoginForm extends HTMLElement{
             <span id="login-info" class="login__info"></span>
             <hr>
             <div class="extra__info">
-                <a href="/">¿Olvidó su contraseña?</a>
+                <a href="/reset-password" data-reset-password>¿Olvidó su contraseña?</a>
             </div>
         `
+        this.handleResetPasswordButton()
+    }
+
+    handleResetPasswordButton(){
+        const btn = this.querySelector("a[data-reset-password")
+        btn.addEventListener("click", (event) => {
+            event.preventDefault()
+            const url = event.target.href;
+            handleUrl(url);
+        })
     }
 
     handleLogin(){

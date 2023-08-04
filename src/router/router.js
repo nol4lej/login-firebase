@@ -1,15 +1,18 @@
 import { userObservable } from "../observable/users-observable.js";
-import { Main } from "../views/Main/Main.js";
-import { Panel } from "../views/Panel/Panel.js";
+import { Main } from "../views/Main/Main.view.js";
+import { Panel } from "../views/Panel/Panel.view.js";
+import { ResetPassword } from "../views/ResetPassword/ResetPassword.view.js";
 
-export const Router = () => {
+export const Router = async () => {
     const path = window.location.pathname
     const root = document.getElementById("root")
+
+    root.innerHTML = `<loader-component width="50" height="50" sizeScreen="fullscreen"></loader-component>`
+
     console.log(typeof userObservable.currentUser[0])
     if(typeof userObservable.currentUser[0] === "object"){
         console.log("entre")
         root.innerHTML = Panel()
-        // return
     }
 
     switch (path) {
@@ -21,6 +24,9 @@ export const Router = () => {
             break;
         case "/panel":
             root.innerHTML = Panel()
+            break;
+        case "/reset-password":
+            root.innerHTML = ResetPassword()
             break;
         default:
             break;
