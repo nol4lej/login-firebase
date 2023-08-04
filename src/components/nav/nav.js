@@ -24,18 +24,6 @@ export class NavBar extends HTMLElement{
         `
     }
 
-    handleButtons(){
-        const links = document.querySelectorAll('a[data-link]');
-
-        links.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault()
-                const url = event.target.href;
-                handleUrl(url); // envio la url al manejador de la URL que se encuentra en el Router
-            });
-        });
-    }
-
     handleActiveUser(){
         userObservable.subscribe((data) => {
             const navList = this.querySelector("#nav-list")

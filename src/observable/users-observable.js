@@ -28,9 +28,10 @@ class UsersObservable extends Subject{
     }
 
     async Logout(){
+        handleUrl(`${window.location.protocol}//${window.location.host}/`)
         this.notify()
         await signOut(auth)
-        handleUrl(`${window.location.protocol}//${window.location.host}/`)
+        
     }
 
     async loginUser(login, password){
@@ -101,15 +102,20 @@ class UsersObservable extends Subject{
     }
 
     async GetUsersDataFromFirestore(currentUserId){
-        const querySnapshot = await getDocs(collection(db, "users"));
-        let userData;
-        querySnapshot.forEach((doc) => {
-            const { displayName, email, role, uid } = doc._document.data.value.mapValue.fields
-            if (uid.stringValue === currentUserId){
-                userData = doc._document.data.value.mapValue.fields;
-            }
-        });
-        return userData;
+        try {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            let userData;
+            querySnapshot.forEach((doc) => {
+                const { displayName, email, role, uid } = doc._document.data.value.mapValue.fields
+                if (uid.stringValue === currentUserId){
+                    userData = doc._document.data.value.mapValue.fields;
+                }
+            });
+            return userData;
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
 }

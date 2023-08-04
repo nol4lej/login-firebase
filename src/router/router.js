@@ -5,14 +5,11 @@ import { Panel } from "../views/Panel/Panel.js";
 export const Router = () => {
     const path = window.location.pathname
     const root = document.getElementById("root")
-    
-
-    setTimeout(() => {
-        root.innerHTML = `<loader-component width="50" height="50"></loader-component>`
-    }, 2000);
-    
-    if(userObservable.currentUser[0] !== "undefined"){
+    console.log(typeof userObservable.currentUser[0])
+    if(typeof userObservable.currentUser[0] === "object"){
+        console.log("entre")
         root.innerHTML = Panel()
+        // return
     }
 
     switch (path) {
