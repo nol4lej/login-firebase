@@ -108,12 +108,17 @@ export class LoginForm extends HTMLElement{
                 const info = this.querySelector("#login-info")
                 if(error.includes("email")){
                     const input = this.querySelector("#login-input")
-                    this.handleInputInvalid(input)
+                    this.handleInputInvalid(input, info)
+                }
+
+                if(error.includes("usuario")){
+                    const input = this.querySelector("#login-input")
+                    this.handleInputInvalid(input, info)
                 }
 
                 if(error.includes("contraseña")){
                     const input = this.querySelector("#password-input")
-                    this.handleInputInvalid(input)
+                    this.handleInputInvalid(input, info)
                 }
 
                 loginButton.innerHTML = "Iniciar sesión" // como hubo error, quito el loader y agrego nuevamente el nombre del boton
@@ -177,14 +182,14 @@ export class LoginForm extends HTMLElement{
             const repeatPassword = this.querySelector("#repeat-password-input")
 
             if(password.value !== repeatPassword.value){
-                this.handleInputInvalid(password)
+                this.handleInputInvalid(password, info)
                 info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> La contraseña ingresada no coincide.`
                 return
             }
 
             if(email.value !== repeatEmail.value){
-                this.handleInputInvalid(email)
+                this.handleInputInvalid(email, info)
                 info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> El email ingresado no coincide.`
                 return
@@ -194,11 +199,11 @@ export class LoginForm extends HTMLElement{
                 await userObservable.registerUser(email.value, password.value, username)
             } catch (error) {
                 if(error.includes("email")){
-                    this.handleInputInvalid(password)
+                    this.handleInputInvalid(password, info)
                 }
 
                 if(error.includes("contraseña")){
-                    this.handleInputInvalid(email)
+                    this.handleInputInvalid(email, info)
                 }
 
                 registerButton.innerHTML = "Registrar usuario" // como hubo error, quito el loader y agrego nuevamente el nombre del boton
@@ -222,11 +227,15 @@ export class LoginForm extends HTMLElement{
     }
 
     // Agrega la clase "invalid" al input en caso de error y se maneja la clase con el evento blur
-    handleInputInvalid(input){
+    handleInputInvalid(input, info){
         input.classList.add("invalid")
         input.addEventListener('blur', () => {  
             input.classList.remove('invalid');
         });
+
+        input.addEventListener("input", () => {
+            info.innerHTML = ""
+        })
     }
 
     showPassword(){

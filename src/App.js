@@ -5,5 +5,7 @@ export const App = () => {
     import("./components/nav/nav.js")
     import("./components/panel/panel.js")
     import("./components/reset-password/reset-password.js")
+    import("./components/forms/forms.js")
+    import("./components/footer/footer.js")
     Router();
 }

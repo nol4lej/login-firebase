@@ -40,6 +40,8 @@ class UsersObservable extends Subject{
         } catch (error) {
             console.log(error)
             switch (error.code) {
+                case "auth/user-not-found":
+                    throw "El usuario no existe."
                 case "auth/invalid-email":
                     throw "El email ingresado no está asociado a una cuenta."
                 case "auth/wrong-password":

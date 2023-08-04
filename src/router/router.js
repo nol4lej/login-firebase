@@ -9,11 +9,10 @@ export const Router = async () => {
 
     root.innerHTML = `<loader-component width="50" height="50" sizeScreen="fullscreen"></loader-component>`
 
-    console.log(typeof userObservable.currentUser[0])
-    if(typeof userObservable.currentUser[0] === "object"){
-        console.log("entre")
-        root.innerHTML = Panel()
-    }
+    // if(typeof userObservable.currentUser[0] === "object"){
+    //     console.log("entre")
+    //     root.innerHTML = Panel()
+    // }
 
     switch (path) {
         case "/":
