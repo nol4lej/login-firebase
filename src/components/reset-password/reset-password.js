@@ -13,7 +13,7 @@ class ResetPasswordComponent extends HTMLElement{
         this.innerHTML = `
             <a href="/" class="back__button" id="back-button">
                 <i class="material-icons">arrow_back</i>
-                Volver atrás
+                Volver
             </a>
 
             <div class="reset__content" id="reset-content">               

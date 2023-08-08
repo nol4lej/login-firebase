@@ -137,8 +137,8 @@ export class LoginForm extends HTMLElement{
                 <div class="input__container">
                     <label>Ingrese un nuevo nombre de usuario:</label>
                     <input id="username-input">
+                    <p class="username__info"><i class="material-icons">info</i>El nombre de usuario solo permite letras minúsculas y mayúsculas.</p>
                 </div>
-
                 <div class="input__container passwords">
                     <div class="input__container__passwords">
                         <label>Ingrese su email:</label>
@@ -160,7 +160,7 @@ export class LoginForm extends HTMLElement{
                         <input type="password" id="repeat-password-input">
                     </div>
                 </div>
-                <button type="submit" class="form__button register" id="register-button">Registrar usuario</button>
+                <button type="submit" class="form__button" id="register-button">Registrar usuario</button>
             </form>
             <span id="register-info" class="register__info"></span>
         `
@@ -173,7 +173,7 @@ export class LoginForm extends HTMLElement{
             event.preventDefault()
             const info = this.querySelector("#register-info")
             const registerButton = this.querySelector("#register-button")
-            const username = this.querySelector("#username-input").value
+            const username = this.querySelector("#username-input")
 
             const email = this.querySelector("#email-input")
             const repeatEmail = this.querySelector("#repeat-email-input")
@@ -181,22 +181,29 @@ export class LoginForm extends HTMLElement{
             const password = this.querySelector("#password-input")
             const repeatPassword = this.querySelector("#repeat-password-input")
 
+            if(!/^[A-Za-z]+$/.test(username.value)){
+                this.handleInputInvalid(username, info)
+                // info.classList.add("error")
+                info.innerHTML = `<i class="material-icons">error</i> El nombre de usuario contiene carácteres inválidos.`
+                return
+            }
+
             if(password.value !== repeatPassword.value){
                 this.handleInputInvalid(password, info)
-                info.classList.add("error")
+                // info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> La contraseña ingresada no coincide.`
                 return
             }
 
             if(email.value !== repeatEmail.value){
                 this.handleInputInvalid(email, info)
-                info.classList.add("error")
+                // info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> El email ingresado no coincide.`
                 return
             }
 
             try {
-                await userObservable.registerUser(email.value, password.value, username)
+                await userObservable.registerUser(email.value, password.value, username.value)
             } catch (error) {
                 if(error.includes("email")){
                     this.handleInputInvalid(password, info)

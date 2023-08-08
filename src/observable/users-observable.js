@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut, sendPasswordResetEmail } from "firebase/auth";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase.js";
 import { Subject } from "../helpers/subject.js";
 import { handleUrl } from "../router/router.js";
@@ -36,10 +36,26 @@ class UsersObservable extends Subject{
 
     async loginUser(login, password){
         try {
-            await signInWithEmailAndPassword(auth, login, password)
+
+            // almaceno el login
+            let actualLogin = login
+
+            const respValidateEmail = await this.ValidateUsername(login)
+            console.log(respValidateEmail)
+
+            if(!respValidateEmail){
+                throw "El nombre de usuario no existe."
+            }
+
+            // si respValidateEmail es una cuenta valida actualizo a actualLogin
+            actualLogin = respValidateEmail
+
+            await signInWithEmailAndPassword(auth, actualLogin, password)
         } catch (error) {
             console.log(error)
-            switch (error.code) {
+            switch (error.code || error) {
+                case "El nombre de usuario no existe.":
+                    throw "El nombre de usuario no existe."
                 case "auth/user-not-found":
                     throw "El usuario no existe."
                 case "auth/invalid-email":
@@ -56,21 +72,27 @@ class UsersObservable extends Subject{
 
     async registerUser(email, password, username){
         try {
+            const respValidate = await this.ValidateUsername(username)
+            console.log(respValidate)
+            if(respValidate){
+                throw "El nombre de usuario no está disponible."
+            }
+
             await createUserWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 await this.UpdateUsername(userCredential, username)
                 await this.AddingUserToFirestore(userCredential)
             })
         } catch (error) {
-            console.log(error)
-            console.log(error.code)
-            switch (error.code) {
+            switch (error.code || error) {
                 case "auth/invalid-email":
                     throw "Invalid email."
                 case "auth/weak-password":
                     throw "Password should be at least 6 characters."
                 case "auth/email-already-in-use":
                     throw "Email already in use."
+                case "El nombre de usuario no está disponible.":
+                    throw "El nombre de usuario no está disponible."
                 default:
                     break;
             }
@@ -103,6 +125,32 @@ class UsersObservable extends Subject{
         }
     }
 
+    async ValidateUsername(loginInput){
+        try {
+            let key = "displayName";
+            if(loginInput.includes("@")){
+                key = "email";
+            }
+
+            const q = query(collection(db, "users"), where(key, "==", loginInput));
+            const querySnapshot = await getDocs(q);
+
+            if(querySnapshot.empty){
+                throw "Usuario no encontrado." // retorna este msj como error si no existe el usuario
+            };
+
+            // Iterar a través de los resultados y verificar si el nombre de usuario ya existe
+            for (const userDoc of querySnapshot.docs) {
+                if (userDoc.data()[key] === loginInput) {
+                    return userDoc.data().email // devuelve el email del username para validar en el login
+                }
+            };
+
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     async GetUsersDataFromFirestore(currentUserId){
         try {
             const querySnapshot = await getDocs(collection(db, "users"));
@@ -117,7 +165,6 @@ class UsersObservable extends Subject{
         } catch (error) {
             console.log(error)
         }
-
     }
 
     async resetPassword(email){

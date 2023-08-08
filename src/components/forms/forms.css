@@ -113,10 +113,6 @@ user-forms{
     margin-bottom: 10px;
 }
 
-.form__button.register{
-    margin-top: 20px;
-}
-
 /* ----------------------- END FORM ----------------------- */
 
 
@@ -144,6 +140,18 @@ user-forms{
 .login__info.error, .register__info.error{
     color: var(--color-red);
 }
+
+.username__info{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 5px;
+    color: var(--color-blue);
+}
+
+.username__info i{
+    font-size: 14px;
+}
 /* ----------------------- END INFO ----------------------- */
 
 
@@ -156,6 +164,10 @@ user-forms{
 
 @media screen and (min-width: 640px) {
 
+    user-forms{
+        width: 620px;
+    }
+    
     .form__buttons{
         padding: 64px 64px 16px 64px;
     }
