@@ -53,6 +53,8 @@ export class LoginForm extends HTMLElement{
 
     }
 
+    // ---------- LOGIN  ----------
+
     login(){
         const root = this.querySelector("#form-root")
         root.innerHTML = `
@@ -79,15 +81,6 @@ export class LoginForm extends HTMLElement{
             </div>
         `
         this.handleResetPasswordButton()
-    }
-
-    handleResetPasswordButton(){
-        const btn = this.querySelector("a[data-reset-password")
-        btn.addEventListener("click", (event) => {
-            event.preventDefault()
-            const url = event.target.href;
-            handleUrl(url);
-        })
     }
 
     handleLogin(){
@@ -128,6 +121,31 @@ export class LoginForm extends HTMLElement{
         })
     }
 
+    showPassword(){
+        const passwordInput = this.querySelector("#password-input")
+        const cbox = this.querySelector("#show-password-cbox")
+        cbox.addEventListener("change", () => {
+            if (cbox.checked) {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        })
+    }
+
+    handleResetPasswordButton(){
+        const btn = this.querySelector("a[data-reset-password")
+        btn.addEventListener("click", (event) => {
+            event.preventDefault()
+            const url = event.target.href;
+            handleUrl(url);
+        })
+    }
+
+    // ---------- LOGIN  ----------
+
+
+    // ---------- REGISTER  ----------
 
     register(){
         const root = this.querySelector("#form-root")
@@ -136,28 +154,28 @@ export class LoginForm extends HTMLElement{
             <form class="form register" id="register-form">
                 <div class="input__container">
                     <label>Ingrese un nuevo nombre de usuario:</label>
-                    <input id="username-input">
+                    <input id="username-input" required>
                     <p class="username__info"><i class="material-icons">info</i>El nombre de usuario solo permite letras minúsculas y mayúsculas.</p>
                 </div>
-                <div class="input__container passwords">
-                    <div class="input__container__passwords">
+                <div class="input__container">
+                    <div class="input__container">
                         <label>Ingrese su email:</label>
-                        <input type="email" id="email-input">
+                        <input type="email" id="email-input" required>
                     </div>
-                    <div class="input__container__passwords">
+                    <div class="input__container">
                         <label>Reingrese su email:</label>
-                        <input type="email" id="repeat-email-input">
+                        <input type="email" id="repeat-email-input" required>
                     </div>
                 </div>
 
-                <div class="input__container passwords">
-                    <div class="input__container__passwords">
+                <div class="input__container">
+                    <div class="input__container">
                         <label>Ingrese su contraseña:</label>
-                        <input type="password" id="password-input">
+                        <input type="password" id="password-input" required>
                     </div>
-                    <div class="input__container__passwords">
+                    <div class="input__container">
                         <label>Reingrese su contraseña:</label>
-                        <input type="password" id="repeat-password-input">
+                        <input type="password" id="repeat-password-input" required>
                     </div>
                 </div>
                 <button type="submit" class="form__button" id="register-button">Registrar usuario</button>
@@ -181,23 +199,23 @@ export class LoginForm extends HTMLElement{
             const password = this.querySelector("#password-input")
             const repeatPassword = this.querySelector("#repeat-password-input")
 
+            registerButton.innerHTML = `<loader-component width="5" height="5"></loader-component>`
+
+            // el método test se invoca en una expresión regular y se le pasa la cadena que se quiere verificar.
             if(!/^[A-Za-z]+$/.test(username.value)){
                 this.handleInputInvalid(username, info)
-                // info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> El nombre de usuario contiene carácteres inválidos.`
                 return
             }
 
             if(password.value !== repeatPassword.value){
                 this.handleInputInvalid(password, info)
-                // info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> La contraseña ingresada no coincide.`
                 return
             }
 
             if(email.value !== repeatEmail.value){
                 this.handleInputInvalid(email, info)
-                // info.classList.add("error")
                 info.innerHTML = `<i class="material-icons">error</i> El email ingresado no coincide.`
                 return
             }
@@ -221,6 +239,8 @@ export class LoginForm extends HTMLElement{
         })
     }
 
+    // ---------- REGISTER  ----------
+
     // Agrega la clase "active" al anchor correspondiente según la ruta actual
     handleActiveClass(path){
         const anchors = this.querySelectorAll("a[data-link]");
@@ -236,6 +256,7 @@ export class LoginForm extends HTMLElement{
     // Agrega la clase "invalid" al input en caso de error y se maneja la clase con el evento blur
     handleInputInvalid(input, info){
         input.classList.add("invalid")
+        info.classList.add("error")
         input.addEventListener('blur', () => {  
             input.classList.remove('invalid');
         });
@@ -244,22 +265,6 @@ export class LoginForm extends HTMLElement{
             info.innerHTML = ""
         })
     }
-
-    showPassword(){
-        const passwordInput = this.querySelector("#password-input")
-        const cbox = this.querySelector("#show-password-cbox")
-        cbox.addEventListener("change", () => {
-            if (cbox.checked) {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
-        })
-    }
-
-
-
-
 
 }
 

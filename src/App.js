@@ -1,4 +1,4 @@
-import { Router } from "../src/router/router.js"
+import { Router } from "./router/router.js"
 
 export const App = () => {
     import("./components/loader/loader.js")

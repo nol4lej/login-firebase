@@ -71,12 +71,6 @@ user-forms{
     gap: 6px;
 }
 
-.input__container__passwords{
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
 .input__container label{
     font-weight: 700;
 }
